@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.HAH.demo.repo.DetailsRepository;
@@ -24,8 +25,13 @@ public class PropagationService {
 
 	public Result save(int state, String header, String... details) {
 
+		var txAttributes = new DefaultTransactionDefinition();
+		txAttributes.setPropagationBehavior(TransactionAttribute.PROPAGATION_REQUIRED);
+		txAttributes.setIsolationLevel(TransactionAttribute.ISOLATION_SERIALIZABLE);
+		txAttributes.setTimeout(5);
+
 		// Start Transaction
-		TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition());
+		TransactionStatus status = txManager.getTransaction(txAttributes);
 
 		try {
 			// create header

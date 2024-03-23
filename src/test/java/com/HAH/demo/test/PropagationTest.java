@@ -24,7 +24,7 @@ public class PropagationTest {
 	private PropagationService propagationService;
 
 	@ParameterizedTest
-	@CsvSource("OneHeader,OneDetails,2,1,1")
+	@CsvSource("OneHeader,OneDetails,0,1,1")
 	void demoTest(String header, String details, int status, int headerId, int detailsId) {
 		var result = propagationService.save(status, header, details);
 
@@ -36,3 +36,4 @@ public class PropagationTest {
 		assertEquals(detailsId, result.detailsIds().get(0));
 	}
 }
+	
